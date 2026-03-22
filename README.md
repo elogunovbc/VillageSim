@@ -1,0 +1,2 @@
+# VillageSim
+Golang study exercise
