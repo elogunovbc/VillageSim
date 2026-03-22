@@ -14,6 +14,10 @@ type Resident struct {
 	Events  []string
 }
 
+func (r *Resident) AddEvent(str string, args ...any) {
+	r.Events = append(r.Events, fmt.Sprintf(str, args...))
+}
+
 func (r *Resident) IncreaseAge() {
 	r.Age++
 }
@@ -23,7 +27,7 @@ func (r *Resident) Die() {
 		return
 	}
 
-	r.Events = append(r.Events, fmt.Sprintf("Умер в %d лет. Какая досада.", r.Age))
+	r.AddEvent("Умер в %d лет. Какая досада.", r.Age)
 	r.Alive = false
 }
 
@@ -34,9 +38,9 @@ func (r *Resident) ChangeMaritalStatus(married bool) {
 
 	switch {
 	case !r.Married && married:
-		r.Events = append(r.Events, "Наконец-то, найден спутник в жизни!!!")
+		r.AddEvent("Наконец-то, найден спутник в жизни!!!")
 	case r.Married && !married:
-		r.Events = append(r.Events, "Развод, больше я не в браке.")
+		r.AddEvent("Развод, больше я не в браке.")
 	}
 
 	r.Married = married
@@ -54,10 +58,10 @@ func (r *Resident) Update() {
 			r.ChangeMaritalStatus(true)
 		}
 		if rand.IntN(10000) < 250 {
-			r.Events = append(r.Events, "Устроился на новую работу.")
+			r.AddEvent("Устроился на новую работу.")
 		}
 		if rand.IntN(10000) < 100 && r.Married {
-			r.Events = append(r.Events, "Поругался с супругой/ом.")
+			r.AddEvent("Поругался с супругой/ом.")
 		}
 		if rand.IntN(10000) < 50 && r.Married {
 			r.ChangeMaritalStatus(false)
@@ -72,7 +76,6 @@ func (r *Resident) Update() {
 
 func (r *Resident) FlushInfo() string {
 	var builder strings.Builder
-	//fmt.Fprintf(&builder, "%+v\n", r)
 
 	var status string
 	if r.Alive {

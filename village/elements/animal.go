@@ -14,6 +14,10 @@ type Animal struct {
 	Events []string
 }
 
+func (a *Animal) AddEvent(str string, args ...any) {
+	a.Events = append(a.Events, fmt.Sprintf(str, args...))
+}
+
 func (a *Animal) IncreaseAge() {
 	a.Age++
 }
@@ -23,7 +27,7 @@ func (a *Animal) Die() {
 		return
 	}
 
-	a.Events = append(a.Events, fmt.Sprintf("Умер в %d лет. Какая досада.", a.Age))
+	a.AddEvent("Умер в %d лет. Какая досада.", a.Age)
 	a.Alive = false
 }
 
@@ -36,13 +40,13 @@ func (a *Animal) Update() {
 
 	for i := 0; i < 12; i++ {
 		if rand.IntN(1000) < 33 {
-			a.Events = append(a.Events, "Почесался.")
+			a.AddEvent("Почесался.")
 		}
 		if rand.IntN(1000) < 15 {
-			a.Events = append(a.Events, "Покусал прохожего.")
+			a.AddEvent("Покусал прохожего.")
 		}
 		if rand.IntN(1000) < 5 {
-			a.Events = append(a.Events, "Сломал лапу.")
+			a.AddEvent("Сломал лапу.")
 		}
 		if rand.IntN(1000) < a.Age {
 			a.Die()
@@ -53,7 +57,6 @@ func (a *Animal) Update() {
 
 func (a *Animal) FlushInfo() string {
 	var builder strings.Builder
-	//fmt.Fprintf(&builder, "%+v\n", a)
 
 	var status string
 	if a.Alive {

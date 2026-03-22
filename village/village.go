@@ -27,7 +27,7 @@ func (v *Village) UpdateAll() {
 func (v Village) ShowAllInfo() string {
 	var builder strings.Builder
 	for _, element := range v.Elements {
-		builder.WriteString(fmt.Sprintf("%s\n", element.FlushInfo()))
+		fmt.Fprintf(&builder, "%s\n", element.FlushInfo())
 	}
 	return builder.String()
 }
